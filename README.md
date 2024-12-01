@@ -2,7 +2,7 @@
 
 ## Milestone 4
 
-1. Addressed imbalance issue when training first model: now you can see that the oversampled data has equal from the two class sizes.
+1. Addressed imbalance issue when training first model: now you can see that the oversampled data has equal from the two class sizes. Also show the same for the second model, except I use SMOTE instead of RandomSampler
 2. Implemented the following for the 2nd model:
     - Used TF-IDF to get better features
     - Used SMOTE to oversample the minority class
