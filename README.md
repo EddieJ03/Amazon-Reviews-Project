@@ -80,14 +80,50 @@ Next, we scaled our data, using StandardScaler from sklearn.
 Finally, due to our class imbalance, with many more positive reviews than negative ones, we used a RandomOverSampler, to balance out the classes. 
 
 ### Model 1
-Our first model, which can be found in this notebook as well: [Preprocessing Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone3/DataCleaning.ipynb)
+Our first model can be found in this notebook as well: [Preprocessing Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone3/DataCleaning.ipynb)
 
 For this model, we decided to use a LogisticRegression model, and tried with various regularization values to see if the model improved with more/less complexity. 
+```
+complexity_values = np.logspace(-3, 3, 20)  # from simple to very complex
+train_errors = []
+test_errors = []
+
+for C in complexity_values:
+    model = LogisticRegression(random_state=42, max_iter=1000, C=C)
+    model.fit(X_train_balanced, y_train_balanced)
+```
+As can be seen in the code snippet above, we decided to tune the model's regularization to see how this affected performance. This not only informed us on the best parameters for logistic regression, but also gave us insight on what to tune for model 2. 
 
 
 ### Model 2
+All our second model code can be found here: [All Steps Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone4/DataCleaning.ipynb)
+
+For our second model, we decided to use a TfidfVectorizer to vectorize the text in the reviews, rather than using # of question marks, word count, and # of exclamation marks. For our parameters for this vectorizer, we decided to cap the number of features at 5000, and allowed it to consider single and two-word sequences by setting ngram_range to (1,2). Also note that we combined the text and title together for each review, then vectorized.
+```
+tfidf = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
+```
+
+We also decided to address our class imbalance using SMOTE rather than RandomOverSampler, as used for Model 1. 
+```
+smote = SMOTE(random_state=42)
+X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
+```
+
+For the model itself, we chose to use a gradient boosted tree, with the library XGBoost. In terms of the model parameters, we chose to have it use the softmax function to make class probabilities, and made the evaluation metric be log loss. 
+```
+xgb = XGBClassifier(
+    objective='multi:softmax',
+    num_class=len(set(y)), 
+    eval_metric='mlogloss',
+    use_label_encoder=False
+)
+```
+To test various model complexities, we varied the max tree depth and made several different models, with depths from 1 to 12, to ensure we weren't overfitting. 
+ 
 
 # Results
+
+# Discussion
 
 # Conclusion
 
