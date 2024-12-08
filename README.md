@@ -56,9 +56,33 @@ Finally, we did a pairplot between all the numerical columns to notice any relat
 Since we are mostly interested in predicing the `rating` column, we decided to take a look at how the other columns might affect it. One thing to notice is that there doesn't seem to be a clear trend between timestamp and rating, suggesting ratings are not strongly correlated with the time of review. Another observation is that a lot of the ratings are 5, if you'll notice the top-left plot. Additionally, the helpful vote values look to be somewhat normally sitributed around the ratings. Another way of looking at it is every rating has at least one helpful vote. This also applies for verified purchase.
 
 ### Data Preprocessing
+All data preprocessing can be found here: [Preprocessing Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone3/DataCleaning.ipynb)
 
+Our data preprocessing included several steps. First of all, we chose to use only verified reviews, i.e., only reviews from those who actually purrchased the music. Then, we filtered the data columns to only include the title, text, and review columns, getting rid of columns like userid, images, helpful votes, etc.
+
+Next, we had to account for the observations that had a title, but were missing text, and vice versa. In these cases, we just filled in the text with the title if the text was empty, or the title with the text if the title was empty. If both the title and text were missing, we just accounted for this by making some dummy text corresponding to the rating:
+```
+    df.loc[missing_mask & (df['rating'].isin([4, 5])), ['title', 'text']] = 'very good'
+    df.loc[missing_mask & (df['rating'] == 3), ['title', 'text']] = 'good'
+    df.loc[missing_mask & (df['rating'].isin([1, 2])), ['title', 'text']] = 'bad'
+```
+
+We also cleaned all the text appearing in the 'title' or 'text' columns to remove whitespace, emojis, or html entities that were left over. 
+
+Then, we created columns based off the text and titles, 3 for the title and 3 for the text. The columns we created are 'title_exclamations' (# of exclamation marks), 'title_questions' (# of question marks), 'title_word_count', and the same 3 for the text. 
+
+Next, we made a positive review column, where a rating of 3 or more was considered positive, and a rating lower than 3 was considered negative.
+
+We then trimmed our dataframe to include only the 3 title columns, 3 text columns, and the positive review column, with our X being the title/text columns, and our Y being the positive review column.
+
+Next, we scaled our data, using StandardScaler from sklearn. 
+
+Finally, due to our class imbalance, with many more positive reviews than negative ones, we used a RandomOverSampler, to balance out the classes. 
 
 ### Model 1
+Our first model, which can be found in this notebook as well: [Preprocessing Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone3/DataCleaning.ipynb)
+
+For this model, we decided to use a LogisticRegression model, and tried with various regularization values to see if the model improved with more/less complexity. 
 
 
 ### Model 2
