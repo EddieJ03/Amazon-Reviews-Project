@@ -151,6 +151,39 @@ We chose to train this model for 5 epochs, with a batch size of 20.
 
 ## Discussion
 
+### Data Preprocessing
+The first key choice we made when doing data preprocessing was to only consider verified reviews for our train/test sets, which we chose as non-verified reviews are not credible and not representative of what someone says when they try a product, as they could've left the review without trying it.
+
+Our next choice was how we decided to fill in missing title/text values. We chose to do this, as stated earliler, with the following scheme:
+```
+df['title'] = df.apply(lambda x: x['text'] if pd.isna(x['title']) and not pd.isna(x['text']) else x['title'], axis=1)
+df['text'] = df.apply(lambda x: x['title'] if pd.isna(x['text']) and not pd.isna(x['title']) else x['text'], axis=1)
+
+# if both title and text are missing fill based on rating
+missing_mask = df['title'].isna() & df['text'].isna()
+df.loc[missing_mask & (df['rating'].isin([4, 5])), ['title', 'text']] = 'very good'
+df.loc[missing_mask & (df['rating'] == 3), ['title', 'text']] = 'good'
+df.loc[missing_mask & (df['rating'].isin([1, 2])), ['title', 'text']] = 'bad'
+```
+
+The reason we chose to do this was because at this point, for our first model, we wanted to keep separate text and title columns, and needed values for both. Our closest estimation to a user's sentiment when it comes to title/text would be what they put for the other field. However, this choice may have affected our model performance later down the road, as eventually we didn't have separate columns for text and titles, and just vectorized/tokenized the combined text. This means that for the entries that only had title, or only had text, the final combined text just ended up being repeated twice.
+
+In terms of the values we chose for title and text in the case that both were missing, we did this based off of our scale, which had ratings >=3 being a positive review, and scores < 3 being negative. Therefore, it made sense to put sample text corresponding to a negative review for ratings 1 and 2, and sample text corresponding to a positive review for ratings over 3. Also, we knew the choice wasn't very important, as from the Data Exploration, we knew that there were only 40 or so entries with null values for text or title, out of the 130,000 total examples. Thus, we didn't need to waste too much time or resources deciding on the best specific words, and just did something simple that reflected the sentiment for each rating.
+
+Furthermore, we chose to remove HTML entities, emojis, and whitespace from the text to standardize the text, and to remove unnecessary complexity that only appeared in a few reviews, like emojis.
+
+Our main choice for the data was how to represent the text in a way that a Logistic Regression model could reason on. Initially, we chose to see if question mark count, exclamation point count, and word count were enough information, and the data we received from this informed our choices for future models. Since it was our first model, it made sense to start with something simple that could inform our future experiments, and show us how important it is to include information about the specific words rather than just punctuation.
+
+In addition, one of our key issues with our dataset, as seen in Data Exploration, was the class imbalance, with the dataset having way more positive than negative reviews. We decided to use an over sampling method, because this class imbalance had to be addressed for any reasonable model, otherwise a model that only ever predicted positive would have great accuracy. Without oversampling, it would be difficult to train a model that reasons well because it would just trend towards only predicting positive.
+
+Also, given our class imbalance, we wanted to group together ratings of 1 and 2, as there were just not enough observations with a rating of 1 or observations with a rating of 2 to have them be their own classes. This is why we chose to have a positive review column instead of rating. 
+
+For our oversampling method, we started with just RandomOverSampling, which just takes random negative observations and duplicates them to balance out the classes. For our first model, we wanted to start with something simple, and based on our results, then see if more advanced methods were necessary. 
+
+### Model 1
+The reason we chose to start with a Logistic Regression model was to 
+
+
 ## Conclusion
 
 ## Statement of Collaboration
