@@ -120,12 +120,64 @@ xgb = XGBClassifier(
 ```
 To test various model complexities, we varied the max tree depth and made several different models, with depths from 1 to 12, to ensure we weren't overfitting. 
  
+### Model 3
+For this model, we chose a new vectorizer, keras.layers.TextVectorization, along with a neural network for classification. 
+```
+vectorizer = keras.layers.TextVectorization(max_tokens=max_tokens, output_mode='int', output_sequence_length=max_length)
+```
 
-# Results
+For classification, we decided on a 4 hidden layer network, with convolutions and maxpools making up the hidden layers. For the input, we had an embedding layer that converted tokens into a vectorized embedding. For the output, we just had a dense layer that used a sigmoid activation layer to predict class outputs. As an optimizer for training, we chose AdamW. 
+```
+model = keras.Sequential() 
 
-# Discussion
+model.add(keras.layers.Embedding(max_tokens, 32, input_length=max_length)) 
 
-# Conclusion
+model.add(keras.layers.Conv1D(32, 7, activation='relu'))
+
+model.add(keras.layers.MaxPooling1D(5))
+
+model.add(keras.layers.Conv1D(32, 7, activation='relu'))
+
+model.add(keras.layers.GlobalMaxPooling1D())
+
+model.add(keras.layers.Dense(1, activation='sigmoid'))
+
+model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.AdamW(), metrics=['accuracy']) 
+```
+
+We chose to train this model for 5 epochs, with a batch size of 20. 
+
+## Results
+
+## Discussion
+
+### Data Exploration
+When it came to data exploration, our main goals were to gain an understanding of the data's distribution, as well as to see which features were most correlated with rating to best inform our next steps.
+
+Initially, it became clear quickly that we had a severe class imbalance, as the mean review rating was around 4.5, and 5 star reviews made up over 75% of the total reviews. 
+![Describe Table](image-3.png)
+
+It was clear off of the start that the columns images, asin, parent_asin, user_id, and verified purchase are not correlated with rating, and should not be used in our model.
+
+Images: this was, for the most case, just images of the product, which does not depend on review rating at all.
+
+Parent_asin, asin, user_id: these are just identification numbers for the specific product/user, so should not be considered. 
+
+For the other numerical features, like timestamp and helpful votes, it became clear after pairplotting that these did not correlate with rating.
+
+
+
+### Data Preprocessing
+
+
+
+### Model 1
+
+
+
+### Model 2
+
+## Conclusion
 
 # Statement of Collaboration
 
