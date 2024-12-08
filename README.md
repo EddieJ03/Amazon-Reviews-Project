@@ -153,5 +153,5 @@ We chose to train this model for 5 epochs, with a batch size of 20.
 
 ## Conclusion
 
-# Statement of Collaboration
+## Statement of Collaboration
 
