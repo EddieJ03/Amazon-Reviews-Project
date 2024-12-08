@@ -149,6 +149,8 @@ We chose to train this model for 5 epochs, with a batch size of 20.
 
 ## Results
 
+### Model 1
+We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision of 0.09 for non-positive reviews while achieving a 0.95 precision for positive reviews, with the testing performances doing roughly similar. Overall, we achieved a 67% accuracy on borth training and testing, but a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score). We see that this logistic regression model does not do well and would need to improve.
 ## Discussion
 
 ### Data Preprocessing
