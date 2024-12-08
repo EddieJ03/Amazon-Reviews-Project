@@ -181,10 +181,45 @@ Also, given our class imbalance, we wanted to group together ratings of 1 and 2,
 For our oversampling method, we started with just RandomOverSampling, which just takes random negative observations and duplicates them to balance out the classes. For our first model, we wanted to start with something simple, and based on our results, then see if more advanced methods were necessary. 
 
 ### Model 1
-The reason we chose to start with a Logistic Regression model was to 
+The reason we chose to start with a Logistic Regression model was because we knew we had a classification task, and we wanted to understand how complex of a model we needed for our task, as well as how complex our data representation needs to be. 
 
+However, upon evaluating our results, it becomes clear that the model results are not much better than simply always predicting a positive review, as our precision for the negative class was just 9%. 
+
+Then, to evaluate how model complexity affected our results, we decided to try various values for the regularization parameter C, and map out how model complexity affected error. It was clear that model complexity did not cause overfitting, as the difference between error on the training and test data didn't grow with increased complexity. This indicated that we could safely try more complex models without overfitting.
+
+Also, it became clear, due to our low overall accuracy, that we needed more complex representations of our data, with words in the text actually being accounted for. In addition, we needed a more advanced oversampling technique, as RandomOverSampling does not actually introduce new data, meaning it doesn't effectively address the class imbalance.
+
+### Model 2
+Our conclusions from our Model 1 experiment led us to try a more advanced oversampling technique, SMOTE, to adjust for the class imbalance.
+
+SMOTE works by taking samples from the minority class, and for each sample, finding its nearest neighbors in the feature space. Then, it creates new, artificial samples in the feature space by creating several new examples with the average of the sample and each of its neighbors.
+
+This will help our data representation be more diverse while also balancing the classes, and allows models to obtain better decision boundaries as it will create new examples within regions of the feature space that didn't have many examples before. 
+
+Furthermore, we decided to diversify and complexify our data representation further by using a vectorizer, TfidfVectorizer, to vectorize the text data, meaning our data now represented the individual words and their meaning. We decided to set max_features to 5000, meaning only the 5000 most important tokens in the text were used, to reduce overall computational complexity and to prevent overfitting. In addition, we set ngram_range to (1,2), meaning the vectorizer will extract single word sequences as well as 2 word sequences. We didn't have it extract longer word sequences to again avoid overfitting, although it may have been good to try experiments with longer word sequences, to see if it improved test performance.
+
+For the model itself, we wanted to use something more complex than LogisticRegression, given that now we had 5000 features, each representing different tokens, meaning we introduced a lot of copmlexity. We decided on using a gradient boosted tree from XGBoost as our classifier. A gradient boosted tree is basically a classifier made up of many different decision trees, that considers the output of each tree on each class, and sums them. This allows for a model that can capture more complex relationships than just one decision tree.
+
+We again chose to try varying complexities for the XGBoost model, to see train/test error for different complexities. It becomes clear that with more complexity, our model performed better, as it achieved lower error on the test set. However, it did seem to show some signs of overfitting, as the gap between train/test error began to widen. This informed us that maybe we need a model with better generalization abilities, as we were fitting the training set very well, but not as well on the test set. This might have been achieved with more regularization or better vectorization of the input text. 
+
+Overall, we did achieve fairly good results with this model, getting 94% accuracy on the test set vs 67% on the test set with model 1. From this experiment, it became clear there was a lot of benefit from increasing the complexity of our data representation as well as increasing our model complexity.
+
+### Model 3
+For our third model, we decided to try a neural network. Now, we could tokenize the entire text response for this example, and have our model learn based off of these tokens, so the vectorized representation of the text tokens would be learned based off of our data, and not use a predetermined algorithm like in the case of the Tfidf-vectorizer.
+
+Thus, we used the TextVectorizer from keras to turn the text into tokens, and had our input layer for our model be an embedding layer that would embed these tokens into a feature space, which could capture complex things like word meaning and relationships between words. For our hidden model layers, we just used convolutional and pooling layers. 
+
+We chose convolutional layers because we wanted words to be considered next to their neighbors, as the meaning of words is often derived from their context. Thus, by using convolutions with a filter size of 7, we are capturing the meaning of several different tokens at once, allowing our model to account for the relationships between words. 
+
+We had 4 hidden layers in our model, to ensure our model was able to capture complexity while also to avoid using too many layers, to prevent the overfitting we saw in model 2. For our output layer, we chose to use a Dense layer, to take the high-level features extracted from the previous convolutions and ensure all of them were considered for the final prediction.
+
+We then trained for 5 epochs, and using a small validation split when training to measure the performance over each epoch. The validation performance went up as training continued, which is good as it means our model was learning to generalize. Furthermore, our final precision and recall for the negative reviews, which was our main issue with models 1 and 2, seemed to improve both for our train and test set, meaning a neural network was a step in the right direction. 
+
+The key change that really enabled this model to perform better was the use of an embedding layer, which really allowed the model to capture the true meaning of the text for each review.
 
 ## Conclusion
+
+
 
 ## Statement of Collaboration
 
