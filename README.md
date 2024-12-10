@@ -151,7 +151,21 @@ We chose to train this model for 5 epochs, with a batch size of 20.
 
 ### Model 1
 We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision of 0.09 for non-positive reviews while achieving a 0.95 precision for positive reviews, with the testing performances doing roughly similar. Overall, we achieved a 67% accuracy on borth training and testing, but a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score). We see that this logistic regression model does not do well and would need to improve.
+
 ## Discussion
+
+When it came to data exploration, our main goals were to gain an understanding of the data's distribution, as well as to see which features were most correlated with rating to best inform our next steps.
+
+Initially, it became clear quickly that we had a severe class imbalance, as the mean review rating was around 4.5, and 5 star reviews made up over 75% of the total reviews. 
+![Describe Table](image-3.png)
+
+It was clear off of the start that the columns images, asin, parent_asin, user_id, and verified purchase are not correlated with rating, and should not be used in our model.
+
+Images: this was, for the most case, just images of the product, which does not depend on review rating at all.
+
+Parent_asin, asin, user_id: these are just identification numbers for the specific product/user, so should not be considered. 
+
+For the other numerical features, like timestamp and helpful votes, it became clear after pairplotting that these did not correlate with rating.
 
 ### Data Preprocessing
 The first key choice we made when doing data preprocessing was to only consider verified reviews for our train/test sets, which we chose as non-verified reviews are not credible and not representative of what someone says when they try a product, as they could've left the review without trying it.
