@@ -150,7 +150,13 @@ We chose to train this model for 5 epochs, with a batch size of 20.
 ## Results
 
 ### Model 1
-We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision of 0.09 for non-positive reviews while achieving a 0.95 precision for positive reviews, with the testing performances doing roughly similar. Overall, we achieved a 67% accuracy on borth training and testing, but a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score). We see that this logistic regression model does not do well and would need to improve.
+We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision of 0.09 for non-positive reviews while achieving a 0.95 precision for positive reviews, with the testing performances doing roughly similar. Overall, we achieved a 67% accuracy on both training and testing, but a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score). We see that this logistic regression model does not do well and would need to improve.
+
+### Model 2
+We see that there is some bit of improvement in the second model. From the training data, we see that our training performance achieves a precision of 0.65 for non-positive reviews while achieving a 0.99 precision for positive ones, with the testing performances being somewhat similar at 0.53 precision for non-positive reviews and 0.98 for positive ones. We see that the F1-score is much more improved as well for both training and testing, seeing a jump from 0.16 to 0.62 and 0.79 to 0.97 F1-scores for the testing data for non-positive data and positive data respectively. Therefore, overall, we see massive improvements to our model.
+
+### Model 3
+We see that for the third model, we see further improvement in the training. We see that the precision for non-positive reviews goes up to 0.85 while maintaining a 0.99 precision for positive reviews with a F1-score at 0.87 and 0.99 respectively. As for the testing results, we see that there are a couple lower values compared to model 2, such as precision for non-positive reviews 0.60 as oppoed to 0.62 in model 2, but the F1-score does go up with 0.62 to 0.64 and 0.97 to 0.97 for non-positive reviews and positive reviews respectively.
 
 ## Discussion
 
