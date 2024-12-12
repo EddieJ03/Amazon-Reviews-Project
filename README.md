@@ -1,7 +1,7 @@
 # 151A Project
 
 ## Introduction
-In this project, we decided to pursue the challenge of predicting user ratings from textual reviews. For this project, we decided to focus on the [Amazon Digital_Music](https://amazon-reviews-2023.github.io/) reviews dataset. This topic touches on the intersection of sentiment analysis, focusing on how user-generated content can reveal customer satisfaction. The dataset's inherent challenges, such as class imbalance, make it an interesting and valuable task for machine learning practitioners, while its application in the digital music domain aligns with practical and impactful use cases like personalized recommendations.
+In this project, we decided to pursue the challenge of predicting user ratings from textual reviews. This topic touches on the intersection of sentiment analysis, focusing on how user-generated content can reveal customer satisfaction. For our dataset, we decided to focus on the [Amazon Digital_Music](https://amazon-reviews-2023.github.io/) reviews dataset. The dataset's inherent challenges, such as class imbalance, make it an interesting and valuable task for machine learning practitioners, while its application in the digital music domain aligns with practical and impactful use cases like personalized recommendations.
 
 We thought this project to be exciting because it shows the power of machine learning techniques to interpret natural language and deliver meaningful insights. A good predictive model in this context can have the following implications: it can enhance customer satisfaction, improve platform loyalty, and support better business strategies by understanding user needs. It also enables user to discover music they love more efficiently. 
 
@@ -53,7 +53,7 @@ False    34401
 Finally, we did a pairplot between all the numerical columns to notice any relationships, and got the following:
 ![pairplot](image-1.png)
 
-Since we are mostly interested in predicing the `rating` column, we decided to take a look at how the other columns might affect it. One thing to notice is that there doesn't seem to be a clear trend between timestamp and rating, suggesting ratings are not strongly correlated with the time of review. Another observation is that a lot of the ratings are 5, if you'll notice the top-left plot. Additionally, the helpful vote values look to be somewhat normally sitributed around the ratings. Another way of looking at it is every rating has at least one helpful vote. This also applies for verified purchase.
+Since we are mostly interested in predicting the `rating` column, we decided to take a look at how the other columns might affect it. One thing to notice is that there doesn't seem to be a clear trend between timestamp and rating, suggesting ratings are not strongly correlated with the time of review. Another observation is that a lot of the ratings are 5 based off of the top-left plot. Additionally, the helpful vote values look to be somewhat normally distributed around the ratings. Another way of looking at it is every rating has at least one helpful vote. This also applies to verified purchases.
 
 ### Data Preprocessing
 All data preprocessing can be found here: [Preprocessing Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone3/DataCleaning.ipynb)
@@ -77,12 +77,14 @@ We then trimmed our dataframe to include only the 3 title columns, 3 text column
 
 Next, we scaled our data, using StandardScaler from sklearn. 
 
-Finally, due to our class imbalance, with many more positive reviews than negative ones, we used a RandomOverSampler, to balance out the classes. 
+Finally, due to our class imbalance, with many more positive reviews than negative ones, we made sure to use an oversampler to balance out the classes. 
 
 ### Model 1
 Our first model can be found in this notebook as well: [Preprocessing Notebook](https://github.com/EddieJ03/151a-project/blob/Milestone3/DataCleaning.ipynb)
 
-For this model, we decided to use a LogisticRegression model, and tried with various regularization values to see if the model improved with more/less complexity. 
+For this model, we decided to use a LogisticRegression model with the following six features: the number of exclamation marks in each of the title and text columns, the number of words in each of the title and text columns, and finally the number of question marks in each of the title and text columns. 
+
+We also wrote code with various regularization values to see if the model improved with more/less complexity. 
 ```
 complexity_values = np.logspace(-3, 3, 20)  # from simple to very complex
 train_errors = []
@@ -162,7 +164,7 @@ Training/Test Error v Complexity:
 ![alt text](image-5.png)
 
 ### Model 2
-We see that there is quite some bit of improvement in the second model. From the training data, we see that our training performance achieves a precision and recall of 0.65 and 0.89 respectively for non-positive reviews while achieving a 0.99 and 0.97 precision and recall respectively for positive ones, with the testing performances being somewhat lower yet still comparable in precision and recall (at 0.53 and 0.74 for non-positive reviews and 0.98 and 0.95 for positive ones). We see that the F1-score is much more improved as well for both training and testing, seeing a jump from 0.16 to 0.62 and 0.79 to 0.97 F1-scores for the testing data for non-positive data and positive data respectively. We also see a much more improved accuracy at 0.96 for training and 0.94 for testing. One thing we did notice is that with higher model compelxities, there does seem to be a sign of overfitting as shown below: the difference between test loss and training loss increases with model complexity. However, overall, we see massive improvements to our model and a more balanced performance.
+We see that there is quite some bit of improvement in the second model. From the training data, we see that our training performance achieves a precision and recall of 0.65 and 0.89 respectively for non-positive and positive reviews while achieving a 0.99 and 0.97 precision and recall respectively for positive ones, with the testing performances being somewhat lower yet still comparable in precision and recall (at 0.53 and 0.74 for non-positive reviews and 0.98 and 0.95 for positive ones). We see that the F1-score is much more improved as well for both training and testing, seeing a jump from 0.16 to 0.62 and 0.79 to 0.97 F1-scores for the testing data for non-positive data and positive data respectively. We also see a much more improved accuracy at 0.96 for training and 0.94 for testing. One thing we did notice is that with higher model compelxities, there does seem to be a very slight sign of overfitting as shown below: the difference between test loss and training loss increases with model complexity. However, overall, we see massive improvements to our model and a more balanced performance.
 
 Train Set Performance:
 ![alt text](image-6.png)
@@ -174,7 +176,7 @@ Training/Test Error v Complexity:
 ![alt text](image-8.png)
 
 ### Model 3
-We see that for the third model, there are even further improvements in the training. We see that the precision for non-positive reviews goes up from 0.65 to 0.85 while maintaining a 0.99 precision for positive reviews with a F1-score at 0.87 and 0.99 respectively. Simialrly, we see improvements on the recall as well as the training performance sees an increase from 0.89 to 0.9 in recall for the non-positive class and a increase from 0.97 to 0.99 in the positive class. As for the testing results, we see that most valyes of precision and recall increase or at the very least stay the same across the positive and non-positve reviews except for the recall on the non-positive class, but this is rather small 0.74 to 0.67. The overall accuracy of our mdel is higher as well. We have a 0.98 accuracy in training (up from 0.96 in Model 2) and 0.95 accuracy in testing (up from 0.94 in Model 2). Overall, Model 3 does the vest overall in terms of F1-score and accuracy and more!
+We see that for the third model, there are even further improvements in the training. We see that the precision for non-positive reviews goes up from 0.65 to 0.85 while maintaining a 0.99 precision for positive reviews with a F1-score at 0.87 and 0.99 respectively. Similarly, we see improvements on the recall as well as the training performance seeing an increase from 0.89 to 0.9 in recall for the non-positive class and an increase from 0.97 to 0.99 in the positive class. As for the testing results, we see that most values of precision and recall increase or at the very least stay the same across the positive and non-positve reviews, except for the recall on the non-positive class, but this is rather small 0.74 to 0.67. The overall accuracy of our model is higher as well. We have a 0.98 accuracy in training (up from 0.96 in Model 2) and 0.95 accuracy in testing (up from 0.94 in Model 2). Overall, Model 3 does the best in terms of F1-score and accuracy, and more!
 
 Accuracy/Loss(binary cross-entropy) over each training epoch:
 ![alt text](image-9.png)
