@@ -267,8 +267,13 @@ We then trained for 5 epochs, and using a small validation split when training t
 The key change that really enabled this model to perform better was the use of an embedding layer, which really allowed the model to capture the true meaning of the text for each review.
 
 ## Conclusion
+In our journey using the Amazon Digital Music reviews, as a team we discovered just how diverse the machine learning ecosystem truly is for trying to do prediction tasks. Our first attempt with a simple Logistic Regression model was pretty much a bust - it could barely distinguish between positive and negative reviews, scoring dismally low on identifying negative reviews. 
 
+However, our next two models were where all the exciting work happened. By introducing more sophisticated techniques like SMOTE for balancing our dataset, using TF-IDF to better understand the text, and eventually employing a neural network with multiple layer, we saw each model's performance gradually become better. We went from a model that was basically guessing, to one that could accurately predict review sentiments with around 95% accuracy. The real game-changer was the neural network, which could somehow capture the nuanced meaning behind words in a way our earlier models couldn't. 
 
+One thing we could've done a little differently is better feature selection for our first logistic regression model. We kind of settled on somewhat simple features to see if that would lead anywhere, but maybe we could've used techniques to tease out better features. Also, if we had more time, we would've probably explored further with more advanced deep learning models. Maybe even training some very popular NLP models like BERT on this data to see how much better it can do. 
+
+Overall though, we all learned a lot from this project and look forward to continuing our journey in machine learning!
 
 ## Statement of Collaboration
 - Anthony Pertsel: Coder/Writer: Coded Model 1, wrote Discussion + Methods on writeup, discussed and proofread all the other parts with group members.
