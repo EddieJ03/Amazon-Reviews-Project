@@ -150,7 +150,7 @@ We chose to train this model for 5 epochs, with a batch size of 20.
 ## Results
 
 ### Model 1
-We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision of 0.09 for non-positive reviews while achieving a 0.95 precision for positive reviews, with the testing performances doing roughly similar. Overall, we achieved a 67% accuracy on both training and testing, but a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score). We see that this logistic regression model does not do well and would need to improve.
+We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision and recall of 0.09 and 0.46 respectively for non-positive reviews while achieving 0.95 and 0.69 respectively for positive reviews, with the testing performances doing roughly similar. Overall, as shown in the graph below, we achieved a log loss of approximately 0.68 for both training and testing (and accuracy of apparoximately 0.67 for both), which would suggest the model is not overfitting. But, a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score) is not a great metric to have for this model evaluation. We see that this logistic regression model does not do well and gives very imbalanced results and would need to improve.
 
 Train Set Performance:
 ![alt text](image-2.png)
@@ -162,7 +162,7 @@ Training/Test Error v Complexity:
 ![alt text](image-5.png)
 
 ### Model 2
-We see that there is some bit of improvement in the second model. From the training data, we see that our training performance achieves a precision of 0.65 for non-positive reviews while achieving a 0.99 precision for positive ones, with the testing performances being somewhat similar at 0.53 precision for non-positive reviews and 0.98 for positive ones. We see that the F1-score is much more improved as well for both training and testing, seeing a jump from 0.16 to 0.62 and 0.79 to 0.97 F1-scores for the testing data for non-positive data and positive data respectively. Therefore, overall, we see massive improvements to our model.
+We see that there is quite some bit of improvement in the second model. From the training data, we see that our training performance achieves a precision and recall of 0.65 and 0.89 respectively for non-positive reviews while achieving a 0.99 and 0.97 precision and recall respectively for positive ones, with the testing performances being somewhat lower yet still comparable in precision and recall (at 0.53 and 0.74 for non-positive reviews and 0.98 and 0.95 for positive ones). We see that the F1-score is much more improved as well for both training and testing, seeing a jump from 0.16 to 0.62 and 0.79 to 0.97 F1-scores for the testing data for non-positive data and positive data respectively. We also see a much more improved accuracy at 0.96 for training and 0.94 for testing. One thing we did notice is that with higher model compelxities, there does seem to be a sign of overfitting as shown below: the difference between test loss and training loss increases with model complexity. However, overall, we see massive improvements to our model and a more balanced performance.
 
 Train Set Performance:
 ![alt text](image-6.png)
@@ -174,7 +174,7 @@ Training/Test Error v Complexity:
 ![alt text](image-8.png)
 
 ### Model 3
-We see that for the third model, we see further improvement in the training. We see that the precision for non-positive reviews goes up to 0.85 while maintaining a 0.99 precision for positive reviews with a F1-score at 0.87 and 0.99 respectively. As for the testing results, we see that there are a couple lower values compared to model 2, such as precision for non-positive reviews 0.60 as oppoed to 0.62 in model 2, but the F1-score does go up with 0.62 to 0.64 and 0.97 to 0.97 for non-positive reviews and positive reviews respectively.
+We see that for the third model, there are even further improvements in the training. We see that the precision for non-positive reviews goes up from 0.65 to 0.85 while maintaining a 0.99 precision for positive reviews with a F1-score at 0.87 and 0.99 respectively. Simialrly, we see improvements on the recall as well as the training performance sees an increase from 0.89 to 0.9 in recall for the non-positive class and a increase from 0.97 to 0.99 in the positive class. As for the testing results, we see that most valyes of precision and recall increase or at the very least stay the same across the positive and non-positve reviews except for the recall on the non-positive class, but this is rather small 0.74 to 0.67. The overall accuracy of our mdel is higher as well. We have a 0.98 accuracy in training (up from 0.96 in Model 2) and 0.95 accuracy in testing (up from 0.94 in Model 2). Overall, Model 3 does the vest overall in terms of F1-score and accuracy and more!
 
 Accuracy/Loss(binary cross-entropy) over each training epoch:
 ![alt text](image-9.png)
