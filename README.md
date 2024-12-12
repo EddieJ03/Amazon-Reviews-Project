@@ -272,4 +272,4 @@ The key change that really enabled this model to perform better was the use of a
 
 ## Statement of Collaboration
 
-Anthony Pertsel: Coded Model 1, wrote Discussion + Methods on writeup, discussed and proofread all the other parts with group members.
+Anthony Pertsel: Coder/Writer: Coded Model 1, wrote Discussion + Methods on writeup, discussed and proofread all the other parts with group members.
