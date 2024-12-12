@@ -323,5 +323,5 @@ Overall though, we all learned a lot from this project and look forward to conti
 
 ## Statement of Collaboration
 - Anthony Pertsel: Coder/Writer: Coded Model 1, wrote Discussion + Methods on writeup, discussed and proofread all the other parts with group members.
-- Saeji: Coder/Writer: did the data preprocessing and exploration, wrote Results and added Figures on writeup, discussed and proofread all the other parts with group members.
-- Edward: Coder/Writer: did Models 2 and 3, wrote Intro and Conclusion, discussed and proofread all the other parts with group members.
+- Saeji Hong: Coder/Writer: did the data preprocessing and exploration, wrote Results and added Figures on writeup, discussed and proofread all the other parts with group members.
+- Edward Jin: Coder/Writer: did Models 2 and 3, wrote Intro and Conclusion, discussed and proofread all the other parts with group members.
