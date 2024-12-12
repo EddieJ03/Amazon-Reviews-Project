@@ -146,7 +146,7 @@ verified_purchase     0
 ```
 So it looks like the data is fairly complete, with only some missing data for the title and text columns.
 
-We were then curious about the number of unique values per each column, which led us to find the following:
+We were then curious about the number of unique values per column, which led us to find the following:
 ```
 Column 'rating' has 5 unique values.
 Column 'title' has 86010 unique values.
@@ -160,9 +160,9 @@ Column 'helpful_vote' has 96 unique values.
 Column 'verified_purchase' has 2 unique values.
 ```
 
-As expected, columns dealing with more variable data such as text and time have the most diversity, whereas the numerical columns have much less unique values.
+As expected, columns dealing with more variable data such as text and time have the most diversity, whereas the numerical columns have much fewer unique values.
 
-We noticed the verified_purchase column only had two values, likely for verify and not verified. We were curious how much reviews were verified, and we got the following:
+We noticed the verified_purchase column only had two values, likely for verify and not verified. We were curious how many reviews were verified, and we got the following:
 ```
 True     96033
 False    34401
@@ -195,7 +195,7 @@ Finally, here are the class distributions before and after oversampling:
 ![oversampling before and after](image-17.png)
 
 ### Model 1
-Here are the results for our first model. We see that the training performance achieves a precision and recall of 0.09 and 0.46 respectively for non-positive reviews while achieving 0.95 and 0.69 respectively for positive reviews, with the testing performances doing roughly similar. Overall, as shown in the graph below, we achieved a log loss of approximately 0.68 for both training and testing (and accuracy of apparoximately 0.67 for both). 
+Here are the results for our first model. We see that the training performance achieves a precision and recall of 0.09 and 0.46 respectively for non-positive reviews while achieving 0.95 and 0.69 respectively for positive reviews, with the testing performances doing roughly similar. Overall, as shown in the graph below, we achieved a log loss of approximately 0.68 for both training and testing (and accuracy of approximately 0.67 for both). 
 
 Train Set Performance:
 ![alt text](image-2.png)
@@ -207,7 +207,7 @@ Training/Test Error v Complexity:
 ![alt text](image-5.png)
 
 ### Model 2
-Here are our results for the second model. From the training data, we see that our training performance achieves a precision and recall of 0.65 and 0.89 respectively for non-positive and positive reviews while achieving a 0.99 and 0.97 precision and recall respectively for positive ones. The testing performances are somewhat lower yet still comparable in precision and recall (at 0.53 and 0.74 for non-positive reviews and 0.98 and 0.95 for positive ones). We also see an accuracy at 0.96 for training and 0.94 for testing. 
+Here are our results for the second model. From the training data, we see that our training performance achieves precision and recall of 0.65 and 0.89 respectively for non-positive and positive reviews while achieving a 0.99 and 0.97 precision and recall respectively for positive ones. The testing performances are somewhat lower yet still comparable in precision and recall (at 0.53 and 0.74 for non-positive reviews and 0.98 and 0.95 for positive ones). We also see an accuracy at 0.96 for training and 0.94 for testing. 
 
 Train Set Performance:
 ![alt text](image-6.png)
@@ -219,7 +219,7 @@ Training/Test Error v Complexity:
 ![alt text](image-8.png)
 
 ### Model 3
-Here are the results for our third model. We see that in the train results the precision for non-positive reviews goes up to 0.85 while maintaining a 0.99 precision for positive reviews. The F1-scores for non-positive and positive are at 0.87 and 0.99 respectively. Additionally, the training performance sees a value of 0.9 in recall for the non-positive class and avalue of 0.99 in the positive class. As for the testing results, we see that most values of precision and recall increase or at the very least stay the same across the positive and non-positve reviews compared to Model 2, except for the recall on the non-positive class, but this is rather small 0.74 to 0.67. TFor accuracies, we have a 0.98 accuracy in training and 0.95 accuracy in testing.
+Here are the results for our third model. We see that in the train results the precision for non-positive reviews goes up to 0.85 while maintaining a 0.99 precision for positive reviews. The F1-scores for non-positive and positive are at 0.87 and 0.99 respectively. Additionally, the training performance sees a value of 0.9 in recall for the non-positive class and a value of 0.99 in the positive class. As for the testing results, we see that most values of precision and recall increase or at the very least stay the same across the positive and non-positve reviews compared to Model 2, except for the recall on the non-positive class, but this is rather small 0.74 to 0.67. For accuracies, we have a 0.98 accuracy in training and 0.95 accuracy in testing.
 
 Accuracy/Loss(binary cross-entropy) over each training epoch:
 ![alt text](image-9.png)
@@ -240,16 +240,16 @@ Initially, it became clear quickly that we had a severe class imbalance, as the 
 
 It was also clear from the start that the columns images, asin, parent_asin, user_id, timestamp, helpful_vote and verified purchase are not correlated with rating, and should not be used in our model.
 
-Images: this was, for the most case, just images of the product, which does not depend on review rating at all.
+Images: this was mostly just images of the product, which does not depend on review rating at all.
 
 Parent_asin, asin, user_id: these are just identification numbers for the specific product/user, so should not be considered. 
 
-For the other numerical features, like timestamp and helpful votes, it became clear after pairplotting that these did not correlate with rating.
+For the other numerical features, like timestamp and helpful votes, it became clear after pair-plotting that these did not correlate with rating.
 
 ### Data Preprocessing
 The first key choice we made when doing data preprocessing was to only consider verified reviews for our train/test sets. Our underlying assumption is that non-verified reviews are not credible and thus not representative of what someone would say compared to if they actually used the product.
 
-Our next choice was how we decided to fill in missing title/text values. We chose to do this, as stated earliler, with the following scheme:
+Our next choice was how we decided to fill in missing title/text values. We chose to do this, as stated earlier, with the following scheme:
 ```
 df['title'] = df.apply(lambda x: x['text'] if pd.isna(x['title']) and not pd.isna(x['text']) else x['title'], axis=1)
 df['text'] = df.apply(lambda x: x['title'] if pd.isna(x['text']) and not pd.isna(x['title']) else x['text'], axis=1)
@@ -261,22 +261,22 @@ df.loc[missing_mask & (df['rating'] == 3), ['title', 'text']] = 'good'
 df.loc[missing_mask & (df['rating'].isin([1, 2])), ['title', 'text']] = 'bad'
 ```
 
-The reason we chose to do this was because at this point, for our first model, we wanted to keep separate text and title columns, and needed values for both. Our closest estimation to a user's sentiment when it comes to title/text would be what they put for the other field. However, this choice may have affected our model performance later down the road, as eventually we didn't have separate columns for text and titles, and just vectorized/tokenized the combined text. This means that for the entries that only had title, or only had text, the final combined text just ended up being repeated twice.
+The reason we chose to do this was because at this point, for our first model, we wanted to keep separate text and title columns, and needed values for both. Our closest estimation to a user's sentiment when it comes to title/text would be what they put for the other field. However, this choice may have affected our model performance later down the road, as eventually we didn't have separate columns for text and titles and just vectorized/tokenized the combined text. This means that for the entries that only had title, or only had text, the final combined text just ended up being repeated twice.
 
-In terms of the values we chose for title and text in the case that both were missing, we did this based off of our scale, which had ratings >=3 being a positive review, and scores < 3 being negative. Therefore, it made sense to put sample text corresponding to a negative review for ratings 1 and 2, and sample text corresponding to a positive review for ratings over 3. Also, we knew the choice wasn't very important, as from the Data Exploration, we knew that there were only 40 or so entries with null values for text or title, out of the 130,000 total examples. Thus, we didn't need to waste too much time or resources deciding on the best specific words, and just did something simple that reflected the sentiment for each rating.
+In terms of the values we chose for title and text in the case that both were missing, we did this based on our scale, which had ratings >=3 being a positive review, and scores < 3 being negative. Therefore, it made sense to put sample text corresponding to a negative review for ratings 1 and 2, and sample text corresponding to a positive review for ratings over 3. Also, we knew the choice wasn't very important, as from the Data Exploration, we knew that there were only 40 or so entries with null values for text or title, out of the 130,000 total examples. Thus, we didn't need to waste too much time or resources deciding on the best specific words, and just did something simple that reflected the sentiment for each rating.
 
 Furthermore, we chose to remove HTML entities, emojis, and whitespace from the text to standardize the text, and to remove unnecessary complexity that only appeared in a few reviews, like emojis.
 
 Our main choice for the data was how to represent the text in a way that a Logistic Regression model could reason on. Initially, we chose to see if question mark count, exclamation point count, and word count were enough information, and the data we received from this informed our choices for future models. Since it was our first model, it made sense to start with something simple that could inform our future experiments, and show us how important it is to include information about the specific words rather than just punctuation.
 
-In addition, one of our key issues with our dataset, as seen in Data Exploration, was the class imbalance, with the dataset having way more positive than negative reviews. We decided to use an over sampling method, because this class imbalance had to be addressed for any reasonable model, otherwise a model that only ever predicted positive would have great accuracy. Without oversampling, it would be difficult to train a model that reasons well because it would just trend towards only predicting positive.
+In addition, one of our key issues with our dataset, as seen in Data Exploration, was the class imbalance, with the dataset having way more positive than negative reviews. We decided to use an oversampling method, because this class imbalance had to be addressed for any reasonable model, otherwise a model that only ever predicted positive would have great accuracy. Without oversampling, it would be difficult to train a model that reasons well because it would just trend towards only predicting positive.
 
 Also, given our class imbalance, we wanted to group together ratings of 1 and 2, as there were just not enough observations with a rating of 1 or observations with a rating of 2 to have them be their own classes. This is why we chose to have a positive review column instead of rating. 
 
 For our oversampling method, we started with just RandomOverSampling, which just takes random negative observations and duplicates them to balance out the classes. For our first model, we wanted to start with something simple, and based on our results, then see if more advanced methods were necessary. 
 
 ### Model 1
-The reason we chose to start with a Logistic Regression model was because we knew we had a classification task, and we wanted to establish a baseline for complex of a model we needed for our task, as well as how complex our data representation needs to be. 
+The reason we chose to start with a Logistic Regression model was because we knew we had a classification task, and we wanted to establish a baseline for how complex of a model we needed for our task, as well as how complex our data representation needs to be. 
 
 However, upon evaluating our results, it becomes clear that the model results are not much better than simply always predicting a positive review, as our precision for the negative class was just 9%. 
 
@@ -289,7 +289,7 @@ Our conclusions from our Model 1 experiment led us to try a more advanced oversa
 
 SMOTE works by taking samples from the minority class, and for each sample, finding its nearest neighbors in the feature space. Then, it creates new, artificial samples in the feature space by creating several new examples with the average of the sample and each of its neighbors.
 
-This will help our data representation be more diverse while also balancing the classes, and allows models to obtain better decision boundaries as it will create new examples within regions of the feature space that didn't have many examples before. 
+This will help our data representation be more diverse while also balancing the classes. It also allows models to obtain better decision boundaries as it will create new examples within regions of the feature space that didn't have many examples before. 
 
 Furthermore, we decided to diversify and complexify our data representation further by using a vectorizer, TfidfVectorizer, to vectorize the text data, meaning our data now represented the individual words and their meaning. We decided to set max_features to 5000, meaning only the 5000 most important tokens in the text were used, to reduce overall computational complexity and to prevent overfitting. In addition, we set ngram_range to (1,2), meaning the vectorizer will extract single word sequences as well as 2 word sequences. We didn't have it extract longer word sequences to again avoid overfitting, although it may have been good to try experiments with longer word sequences, to see if it improved test performance.
 
@@ -300,7 +300,7 @@ We again chose to try varying complexities for the XGBoost model, to see train/t
 Overall, we did achieve fairly good results with this model, getting 94% accuracy on the test set vs 67% on the test set with Model 1. We also did much better on the minority class 0 compared to Model 1, with F1-Score of 0.62 v.s. 0.19 on the Test data. From this experiment, it became clear there was a lot of benefit from increasing the complexity of our data representation as well as increasing our model complexity.
 
 ### Model 3
-For our third model, we decided to try a neural network. Now, we could tokenize the entire text response for this example, and have our model learn based off of these tokens, so the vectorized representation of the text tokens would be learned based off of our data, and not use a predetermined algorithm like in the case of the Tfidf-vectorizer.
+For our third model, we decided to try a neural network. Now, we could tokenize the entire text response for this example, and have our model learn based on these tokens, so the vectorized representation of the text tokens would be learned based off of our data, and not use a predetermined algorithm like in the case of the Tfidf-vectorizer.
 
 Thus, we used the TextVectorizer from keras to turn the text into tokens, and had our input layer for our model be an embedding layer that would embed these tokens into a feature space, which could capture complex things like word meaning and relationships between words. For our hidden model layers, we just used convolutional and pooling layers. 
 
