@@ -174,6 +174,23 @@ Finally, we did a pairplot between all the numerical columns to notice any relat
 Since we are mostly interested in predicting the `rating` column, we decided to take a look at how the other columns might affect it using a pairplot, which is shown above
 
 ### Data Preprocessing
+Here is what our features looked like after pre-processing with additional features and getting rid of unnecessary features:
+![Addiitonal features](image-13.png)
+
+This is what the test feature data looks like after split and scale:
+![X test scaled](image-12.png)
+
+And the corresponding y_test:
+![y test scaled](image-14.png)
+
+This is what the train feature data looks like after split and scale:
+![X train scaled](image-15.png)
+
+And the corresponding y_train:
+![y train scaled](image-16.png)
+
+Finally, here are the class distributions before and after oversampling:
+![oversampling before and after](image-17.png)
 
 ### Model 1
 We see that for our first model, it seems to do very poorly on our imbalanaced dataset. We see that the training performance achieves a precision and recall of 0.09 and 0.46 respectively for non-positive reviews while achieving 0.95 and 0.69 respectively for positive reviews, with the testing performances doing roughly similar. Overall, as shown in the graph below, we achieved a log loss of approximately 0.68 for both training and testing (and accuracy of apparoximately 0.67 for both), which would suggest the model is not overfitting. But, a 0.16 F1-score for the negative class (while the positive class has 0.8 F1-score) is not a great metric to have for this model evaluation. We see that this logistic regression model does not do well and gives very imbalanced results and would need to improve.
