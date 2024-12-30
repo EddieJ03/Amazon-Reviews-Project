@@ -1,4 +1,4 @@
-# 151A Project
+# Amazon Reviews Project
 
 ## Introduction
 In this project, we decided to pursue the challenge of predicting user ratings from textual reviews. This topic touches on the intersection of sentiment analysis, focusing on how user-generated content can reveal customer satisfaction. For our dataset, we decided to focus on the [Amazon Digital_Music](https://amazon-reviews-2023.github.io/) reviews dataset. The dataset's inherent challenges, such as class imbalance, make it an interesting and valuable task for machine learning practitioners, while its application in the digital music domain aligns with practical and impactful use cases like personalized recommendations.
